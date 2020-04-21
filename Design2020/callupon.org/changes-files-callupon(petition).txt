@@ -1,0 +1,39 @@
+Views files ==>
+
+1) /home/petition/public_html/application/views/list.php
+3) /home/petition/public_html/application/views/start-petition.php
+4) /home/petition/public_html/application/views/update-petition.php
+5) /home/petition/public_html/application/views/detail.php
+6) /home/petition/public_html/application/views/forgot-password.php
+7) /home/petition/public_html/application/views/account_settings.php
+
+Views/common files ==>
+
+1) /home/petition/public_html/application/views/common/header.php
+2) /home/petition/public_html/application/views/common/footer.php
+
+
+Css files ==>
+
+1) /home/petition/public_html/assets/css/style.css
+
+
+
+
+
+==============================================================================================================
+
+4/7/2020
+
+
+Views/common files ==>
+
+1) /home/petition/public_html/application/views/common/header.php
+
+
+
+controller files  ==>
+
+1)  /home/petition/public_html//application/controllers/User_registration.php
+
+

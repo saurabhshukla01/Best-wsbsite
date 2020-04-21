@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<style>
+/* CSS Reset used: http://seodesigns.com/projects/codepen/reset.css */
+.sticky-footer {
+  display: block;
+  height: 58px;
+  background: #006848;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  z-index: 3;
+}
+.sticky-footer .one-fourth {
+  width: 25%;
+  float: left;
+  color: #fff;
+  text-align: center;
+  height: 58px;
+  position: relative;
+  cursor: pointer;
+}
+.sticky-search,
+.sticky-filters,
+.sticky-map,
+.sticky-radius {
+  width: 25px;
+  height: 25px;
+  margin: auto;
+  margin-top: 11px;
+}
+.sticky-footer .one-fourth p {
+  font-size: 10px;
+  margin-top: 3px;
+}
+</style>
+</head>
+<body>
+
+  <div class="sticky-footer">
+    
+    <div class="one-fourth" id="search"><img class="sticky-search" src="http://seodesigns.com/projects/codepen/060516/search.png" />
+      <p>search</p>
+    </div>
+    
+    <div class="one-fourth" id="filters"><img class="sticky-filters" src="http://seodesigns.com/projects/codepen/060516/filters.png" />
+      <p>filters</p>
+    </div>
+    
+    <div class="one-fourth" id="map"><img class="sticky-map" src="http://seodesigns.com/projects/codepen/060516/map.png" />
+      <p>map</p>
+    </div>
+    
+    <div class="one-fourth" id="radius"><img class="sticky-radius" src="http://seodesigns.com/projects/codepen/060516/radius.png" />
+      <p>radius</p>
+    </div>
+    
+  </div>
+
+<script>
+  //include jQuery library
+$('.one-fourth').click(function() {
+  var idName = $(this).attr('id');
+  alert('You clicked ' + idName);
+});
+</script>
+
+</body>
+</html>

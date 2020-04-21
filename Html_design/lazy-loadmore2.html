@@ -1,0 +1,311 @@
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<style>
+
+$blue: #182532;
+
+img {
+  max-width:100%;
+}
+#logo {
+  width:100px;
+  height:100px;
+  margin:0 auto;
+  text-align:center;
+}
+
+header.search-header {
+  position:fixed;
+
+  top:0;
+  padding:1rem 0;
+  z-index:9;
+  background-color:#fff;
+  border-bottom:1px solid #eee;
+  width:100%;
+  .input {
+    margin-right:2rem;
+  }
+}
+
+body {
+  background-color:#f9f9f9;
+}
+
+.content {
+  position:relative;
+  top:8rem;
+
+  img {
+    background-color:#fff;
+    border:solid 1px #eee;
+    max-width:650px;
+    padding:1rem;
+    margin:1rem 0;
+    height:auto;
+    display:block;
+  }
+}
+
+.sortBy {
+
+  a.active {
+    border-bottom:2px solid #4183c4;
+  }
+
+  .item {
+    font-size:1.4rem!important;
+
+    &:first-of-type {
+      padding-left:1rem!important;
+    }
+  }
+}
+
+</style>
+</head>
+<body>
+  <div>
+    <header class='search-header'>
+      <div class="ui container">
+        <div class="ui large icon input">
+          <input id='search' placeholder='Search a subreddit' type='text' value='pics'>
+          <i class="search icon"></i>
+        </div>
+        <div class="ui horizontal list sortBy">
+          <a class='item' href='#' title='hot'>hot</a>
+          <a class='item' href='#' title='new'>new</a>
+          <a class='item' href='#' title='rising'>rising</a>
+          <a class='item' href='#' title='controversial'>controversial</a>
+          <a class='item active' href='#' title='top'>top</a>
+        </div>
+
+    </div>
+    </header>
+    <div class="ui container">
+      <div class="content">        
+          <p>Some content gets blocked with a 403 Error :-(</p>
+        <p>Just keep scrolling until images load. Would be much cooler if it wasn't blocked.</p>
+      </div>
+    </div>
+</div>
+
+<script>
+
+$(document).ready(function() {
+
+var subreddit,
+  sortBy,
+  searchInput,
+  contentDiv,
+  lastId;
+
+searchInput = $('#search');
+contentDiv = $('.content');
+
+
+// Active Class on search
+searchInput.on('focus', function(){
+  $(this).val('').addClass('active');
+}).on('blur', function(){
+  $(this).val(subreddit).removeClass('active');
+});
+
+// When enter is pressed on search
+$(document).on('keyup', function(e){
+  if(e.keyCode === 13 && $('#search').hasClass('active')){
+    subreddit = searchInput.val();
+    searchInput.blur();
+    $('img').remove();
+    callAPI();
+  }
+});
+
+
+$('.sortBy').find('a').on('click', function(){
+  $('.sortBy').find('a').removeClass('active');
+  $(this).addClass('active');
+  $('img').remove();
+  callAPI();
+  return false;
+});
+
+function isImg(item) {
+  if (item.endsWith('.png') || item.endsWith('.jpg') ||  item.endsWith('.jpeg') || item.endsWith('.gif')) {
+    return true;
+  }
+  return false;
+}
+
+function isGifv(item) {
+  if ( item.endsWith('.gifv') ) {
+    return true;
+  }
+
+  return false;
+}
+
+function scrollLoad() {
+  $(document).on('scroll', function() {
+    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+         if (lastId) {
+            callAPI({
+                after: 't3_' + lastId
+            });
+
+        }
+    }
+  });
+}
+
+function callAPI(params){
+  subreddit = searchInput.val(),
+  sortBy = $('a.active').attr('title');
+  params = params || {};
+
+  var regex = '\[gifv\]https?\://i\.imgur\.com/([a-z0-9]+)\.gifv\[/gifv\]';
+
+
+  
+ 
+  
+  $.ajax({
+    url:'//reddit.com/r/'+ subreddit +'/'+ sortBy +'/.json?jsonp=?&limit=10',
+    type: 'GET',
+    data: params,
+    dataType : 'json',
+    success: function(json) {
+        console.log(json);
+        var posts = json.data.children;
+      
+        for(var i = 0; i < posts.length; i++){
+            var post = {};
+                post.imgSrc = posts[i].data.url;
+                post.title = posts[i].data.title;
+                //post.votes = posts[i].data.ups;
+                post.perma = posts[i].data.permalink;
+          
+            if(isImg(post.imgSrc)) {
+              
+              var link = $('<a></a>').attr('href', post.imgSrc).appendTo(contentDiv);
+              var img = $("<img class='lazy'/>").attr("data-original", post.imgSrc).appendTo(link);
+
+              $(document).ajaxStop(function(){
+            $("img.lazy").lazyload({ 
+                effect: "fadeIn"
+            }).removeClass("lazy");
+        });
+            }/* else if (isGifv(post.imgSrc)) {
+              $("<iframe frameborder='0' class='lazy'/>").attr("src", post.imgSrc).appendTo(contentDiv);
+              $(document).ajaxStop(function(){
+            $("iframe.lazy").lazyload({ 
+                effect: "fadeIn"
+            }).removeClass("lazy");
+        });
+            }*/
+        } // end for loop
+
+        if (posts && posts.length > 0) {
+            lastId = posts[posts.length - 1].data.id;
+        } else {
+            lastId = undefined;
+        }
+    } // end success
+  });
+}
+
+
+
+callAPI();
+scrollLoad();
+  
+});
+
+/*var App = {
+  $content: $('.content'),
+  subreddit: 'aww'
+};*/
+
+
+/*
+function isGif(item) {
+  if (item.data.url.endsWith('.gif') || item.data.url.endsWith('.gifv')  ) {
+    return true;
+  }
+
+  return false;
+}
+
+function isInArray(arr, val) {
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] === val) {
+      return true
+    }
+  }
+  return false;
+}
+
+
+var lastId;
+
+$('#pics').on('click', function() {
+  callAPI('pics', 10);
+});
+function callAPI(subreddit, limit, params) {
+    params = params || {};
+    $.getJSON("https://www.reddit.com/r/" + subreddit+ "/.json?jsonp=?&sort=random&limit=" + limit , params, function (data) {
+
+        var children = data.data.children;
+
+        $.each(children, function (i, item) {
+          if(isImg(item)) {
+              $("<img class='lazy'/>").attr("data-original", item.data.url).appendTo(App.$content);
+              //$('<h2>' + item.data.title + '</h2>').appendTo(App.$content);
+
+              $(document).ajaxStop(function(){
+            $("img.lazy").lazyload({ 
+                effect: "fadeIn"
+            }).removeClass("lazy");
+        });
+
+          }
+        });
+
+        if (children && children.length > 0) {
+            lastId = children[children.length - 1].data.id;
+        } else {
+            lastId = undefined;
+        }
+    });
+}
+
+
+
+function scrollLoad(subreddit, limit) {
+  $(document).on('scroll', function() {
+    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+         if (lastId) {
+            callAPI(subreddit, limit, {
+                after: 't3_' + lastId
+            });
+
+        }
+    }
+  });
+}
+
+function init(subreddit, limit) {
+  callAPI(subreddit, limit, {after: 't3_' + lastId});
+  scrollLoad(subreddit, limit);
+}
+
+init(App.subreddit, 10);
+
+*/
+
+
+
+</script>
+</body>
+</html>

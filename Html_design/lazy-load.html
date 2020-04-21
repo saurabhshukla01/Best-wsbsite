@@ -1,0 +1,132 @@
+<html>
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<style>
+  html,
+  body {
+    width:100%;
+    height:100%;
+    margin:0;
+  }
+
+  h1 {
+  font-family: 'Alegreya', serif;
+    letter-spacing:0.1em;
+    text-align:center;
+    font-size:4em;
+    padding-bottom:0.2em;
+  }
+
+  .container {
+    margin-top:2em;
+    position:relative;
+    width:100%;
+    text-align: center;
+  }
+
+  img {
+    width:70%;
+      opacity: 0;
+    transition: opacity 0.7s ease-in;
+  }
+</style>
+</head>
+<body>
+<h1>Lazy Load Images On Scroll</h1>
+
+<div class="container">
+  <div class="imagelink">
+    <img src="http://www.acpd-calt.org/wp-content/uploads/2010/12/white-square.png" data-src="  http://www.ignant.de/wp-content/uploads/2014/11/Griffin_Lamb_Photography_07.jpg">
+  </div>
+</div>
+
+<div class="container">
+  <div class="imagelink">
+    <img src="http://www.acpd-calt.org/wp-content/uploads/2010/12/white-square.png" data-src="http://www.ignant.de/wp-content/uploads/2014/11/Griffin_Lamb_Photography_02.jpg">
+  </div>
+</div>
+
+<div class="container">
+  <div class="imagelink">
+    <img src="http://www.acpd-calt.org/wp-content/uploads/2010/12/white-square.png" data-src="http://www.ignant.de/wp-content/uploads/2014/11/Griffin_Lamb_Photography_03.jpg">
+  </div>
+</div>
+
+<div class="container">
+  <div class="imagelink">
+    <img src="http://www.acpd-calt.org/wp-content/uploads/2010/12/white-square.png" data-src="http://www.ignant.de/wp-content/uploads/2014/11/Griffin_Lamb_Photography_04.jpg">
+  </div>
+</div>
+
+<div class="container">
+  <div class="imagelink">
+    <img src="http://www.acpd-calt.org/wp-content/uploads/2010/12/white-square.png" data-src="http://www.ignant.de/wp-content/uploads/2014/11/Griffin_Lamb_Photography_05.jpg">
+  </div>
+</div>
+
+<div class="container">
+  <div class="imagelink">
+    <img src="http://www.acpd-calt.org/wp-content/uploads/2010/12/white-square.png" data-src="http://www.ignant.de/wp-content/uploads/2014/11/Griffin_Lamb_Photography_01.jpg">
+  </div>
+</div>
+
+
+<script>
+    /**
+  * jQuery Unveil
+  * A very lightweight jQuery plugin to lazy load images
+  * https://luis-almeida.github.com/unveil
+  *
+  * Licensed under the MIT license.
+  * Copyright 2013 Luís Almeida
+  * https://github.com/luis-almeida
+  */
+  ;(function($) {
+  $.fn.unveil = function(threshold, callback) {
+  var $w = $(window),
+  th = threshold || 0,
+  retina = window.devicePixelRatio > 1,
+  attrib = retina? "data-src-retina" : "data-src",
+  images = this,
+  loaded;
+  this.one("unveil", function() {
+  var source = this.getAttribute(attrib);
+  source = source || this.getAttribute("data-src");
+  if (source) {
+  this.setAttribute("src", source);
+  if (typeof callback === "function") callback.call(this);
+  }
+  });
+  function unveil() {
+  var inview = images.filter(function() {
+  var $e = $(this);
+  if ($e.is(":hidden")) return;
+  var wt = $w.scrollTop(),
+  wb = wt + $w.height(),
+  et = $e.offset().top,
+  eb = et + $e.height();
+  return eb >= wt - th && et <= wb + th;
+  });
+  loaded = inview.trigger("unveil");
+  images = images.not(loaded);
+  }
+  $w.on("scroll.unveil resize.unveil lookup.unveil", unveil);
+  unveil();
+  return this;
+  };
+  })(window.jQuery || window.Zepto);
+
+
+
+  /*      OWN JAVASCRIPT         */
+
+  $(document).ready(function() {
+  $("img").unveil(200, function() {
+    $(this).load(function() {
+      this.style.opacity = 1;
+    });
+  });
+  });
+</script>
+</body>
+</html>

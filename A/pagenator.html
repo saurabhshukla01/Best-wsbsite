@@ -1,0 +1,96 @@
+<style>
+
+*{
+  box-sizing: border-box;
+  font-family: arial;
+}
+
+body{
+  background-color: #fff;
+}
+
+.container{
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  transform: translateY(-50%);
+}
+
+.pagination{
+  list-style: none;
+  display: inline-block;
+  padding: 0;
+}
+
+.pagination li{
+  display: inline;
+  text-align: center;
+}
+
+.pagination a{
+  float: left;
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 5px 12px;
+  color: #fff;
+  margin-left: -1px;
+  border: 1px solid transparent;
+  line-height: 1.5;
+}
+
+.pagination a:active{
+  outline: none;
+}
+
+.modal a{
+  margin: 0 5px;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 100%;
+  background-color: #468599;
+  transform: translateY(0);
+  transition: all .3s ease-out;
+}
+
+.modal a.prev{
+  border-radius: 50px 0 0 50px;
+  width: 100px;
+}
+
+.modal a.next{
+  border-radius: 0 50px 50px 0;
+  width: 100px;
+}
+
+.modal a:hover{
+  background-color: #FFA100;
+  color: #fff;
+  font-weight: 1000;
+  transform: translateY(8px);
+  transition: all .3s ease-out;
+}
+
+.modal a.active, .modal a:active{
+  background-color: #FFA100;
+}
+</style>
+
+<!-- HTML MARKUP-->
+	<div class="container">
+		<ul class="pagination modal">
+			<li><a href="#" class="prev">Previous</a></li>
+			<li><a href="#">1</a></li>
+			<li><a href="#">2</a></li>
+			<li><a href="#">3</a></li>
+			<li><a href="#" class="active">4</a></li>
+			<li><a href="#">5</a></li>
+			<li><a href="#">6</a></li>
+			<li><a href="#">7</a></li>
+			<li><a href="#" class="next">Next</a></li>
+		</ul>
+	</div>
